@@ -22,6 +22,5 @@ public class Wallet {
         this.wallet.add(this.XRP);
         this.wallet.add(this.Ethereum);
         this.wallet.add(this.Bitcoin);
-
     }
 }
