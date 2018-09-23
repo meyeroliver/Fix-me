@@ -71,7 +71,7 @@ public class Market {
      * @throws Exception thrown due to a mishandling of the key
      */
 
-    public void startClient() throws Exception {
+    private void startClient() throws Exception {
 
         while (true){
             if (this.selector.select() == 0)
@@ -127,7 +127,7 @@ public class Market {
             this.client.register(this.selector, SelectionKey.OP_READ);
             this.idFlag = true;
         } else {
-            //TODO: insert messages that will be sent back to the broker
+            //todo: follow through the process dont think its right
             if (this.processMessage(messages)) {
                 System.out.println("The buy is valid");
                 messages = validMessageProcessor(true);
@@ -159,10 +159,9 @@ public class Market {
         newMessage = newMessage.concat(tag[6] + "|" + tag[7] + "|" + tag[8] + "|" );
         if (orderAccept)
             newMessage = newMessage.concat("39=0|");
-        else if(!orderAccept)
+        else
             newMessage = newMessage.concat("39=8|");
         newMessage = newMessage.concat("10=" + checkSumCalculator(newMessage));
-
         return newMessage;
     }
 
@@ -179,7 +178,7 @@ public class Market {
         String instrument = splitMessage[6].split("=")[1];
         double quantity = Double.parseDouble(splitMessage[8].split("=")[1]);
         boolean quantityCheck = false;
-        //TODO: create a sell task as well
+
         for (Commodity commodity: this.commodities) {
             if (!commodity.getName().equals(instrument))
                 continue;
@@ -197,7 +196,6 @@ public class Market {
      */
 
     private void writeToClient() throws Exception {
-
         messages = bufferedReader.readLine();
         this.buffer = ByteBuffer.allocate(1024);
         this.buffer.put(messages.getBytes());
@@ -229,7 +227,6 @@ public class Market {
     }
 
     public static void main(String[] args) {
-
         Market market = new Market("CoinMarketCap",
                 new Commodity("Bitcoin", 178956.0, 6997.34),
                 new Commodity("Ethereum", 10166946.0, 281.46),
@@ -239,7 +236,5 @@ public class Market {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        /*MarketFactory marketFactory = new MarketFactory();
-        marketFactory.createMarkets();*/
     }
 }
