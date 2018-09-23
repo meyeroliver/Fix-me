@@ -94,7 +94,6 @@ public class BrokerClient {
         }
     }
 
-
     private void read () throws  Exception {
         client.read(buffer);
         messages = new String(buffer.array()).trim();
@@ -114,8 +113,7 @@ public class BrokerClient {
         this.client.register(this.selector, SelectionKey.OP_READ | SelectionKey.OP_WRITE );
     }
 
-
-    public void writeToClient() throws Exception {
+    private void writeToClient() throws Exception {
         messages = fixMessage;
         messages = messages + "10=" + checkSumCalculator(messages);
         this.buffer = ByteBuffer.allocate(1024);
@@ -128,7 +126,7 @@ public class BrokerClient {
         this.brokerFlag = false;
     }
 
-    public void processMessage () throws Exception{
+    private void processMessage () throws Exception{
         String splitMessage[] = messages.split("\\|");
         String item = "";
         int quantity = 0;
@@ -280,12 +278,8 @@ public class BrokerClient {
     }
 
     public static void main(String[] args) {
-
-
         view = new ConsoleDisplay();
         BrokerClient client = new BrokerClient();
-
-
         try {
             client.startClient();
         } catch (Exception e) {
